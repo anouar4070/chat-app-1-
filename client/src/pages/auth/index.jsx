@@ -1,4 +1,6 @@
 import Background from "@/assets/login2.png";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 import React from "react";
 import Victory from "../../assets/victory.svg";
@@ -7,6 +9,30 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const Auth = () => {
+
+  function submitRegister() {
+    console.log("submit");
+  }
+  let validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("email Required"),
+    password: Yup.string()
+      .matches(/^[A-Z][a-z0-9]{5,10}$/, "password start with uppercase")
+      .required("password  is Required"),
+    confirmPassword: Yup.string().oneOf([Yup.ref("password")]),
+  });
+
+  let formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema,
+    onSubmit: submitRegister,
+  });
+
   return (
     <div className="h-[100vh] w-[100vw] flex items-center justify-center">
       <div className="h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2">
@@ -36,36 +62,112 @@ const Auth = () => {
                   Sign up
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="login" className="flex flex-col gap-5 mt-10">
+              <TabsContent
+                onSubmit={formik.handleSubmit}
+                value="login"
+                className="flex flex-col gap-5 mt-10"
+              >
                 <Input
                   placeholder="Email"
                   type="email"
+                  name="email"
+                  value={formik.values.email}
                   className="rounded-full p-6 "
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  id="email"
                 />
+                {formik.errors.email && formik.touched.email && (
+                  <div className="bg-white text-red-500 rounded">
+                    {formik.errors.email}
+                  </div>
+                )}
+
                 <Input
                   placeholder="Password"
                   type="password"
+                  name="password"
+                  value={formik.values.password}
                   className="rounded-full p-6 "
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  id="password"
                 />
-                <Button className="rounded-full p-6 "> Login</Button>
+                {formik.errors.password && formik.touched.password && (
+                 <div className="bg-white text-red-500 rounded">
+                    {formik.errors.password}
+                  </div>
+                )}
+
+                <Button
+                  disabled={!formik.isValid && formik.dirty}
+                  type="submit"
+                  className="rounded-full p-6 "
+                >
+                  {" "}
+                  Login
+                </Button>
               </TabsContent>
-              <TabsContent value="signup" className="flex flex-col gap-5 ">
+              <TabsContent
+                onSubmit={formik.handleSubmit}
+                value="signup"
+                className="flex flex-col gap-5 "
+              >
                 <Input
                   placeholder="Email"
                   type="email"
+                  name="email"
+                  value={formik.values.email}
                   className="rounded-full p-6 "
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  id="email"
                 />
+                {formik.errors.email && formik.touched.email && (
+                  <div className="bg-white text-red-500 rounded">
+                    {formik.errors.email}
+                  </div>
+                )}
                 <Input
                   placeholder="Password"
                   type="password"
+                  name="password"
+                  value={formik.values.password}
                   className="rounded-full p-6 "
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  id="password"
                 />
+                {formik.errors.password && formik.touched.password && (
+                 <div className="bg-white text-red-500 rounded">
+                    {formik.errors.password}
+                  </div>
+                )}
+
                 <Input
                   placeholder="Confirm Password"
                   type="password"
+                  name="confirmPassword"
+                  value={formik.values.confirmPassword}
                   className="rounded-full p-6 "
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  id="confirmPassword"
                 />
-                <Button className="rounded-full p-6 ">Sign up</Button>
+                {formik.errors.confirmPassword &&
+                  formik.touched.confirmPassword && (
+                    <div className="bg-white text-red-500 rounded">
+                      {formik.errors.confirmPassword}
+                    </div>
+                  )}
+
+                <Button
+                  disabled={!formik.isValid && formik.dirty}
+                  type="submit"
+                  className="rounded-full p-6 "
+                >
+                  Sign up
+                </Button>
               </TabsContent>
             </Tabs>
           </div>
