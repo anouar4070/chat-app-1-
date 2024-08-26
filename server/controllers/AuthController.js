@@ -12,10 +12,8 @@ const createToken = (email, userId) => {
 const signup = async (request, response, next) => {
   try {
     const { email, password } = request.body;
-    if (!email || !password) {
-      return response.status(400).send("Email & Password Required");
-    }
-    const user = await User.create({ email, password });
+    if (email!=="" && password!=="") {
+     const user = await User.create({ email, password });
     response.cookie("jwt", createToken(email, user.id), {
       maxAge,
       secure: true,
@@ -28,7 +26,11 @@ const signup = async (request, response, next) => {
         profileSetup: user.profileSetup,
       },
     });
-  } catch (error) {
+  }
+  else {
+  return response.status(400).send("Email & Password Required");
+  }}
+  catch (error) {
     console.log({ error });
     return response.status(500).send("Internal Server Error");
   }

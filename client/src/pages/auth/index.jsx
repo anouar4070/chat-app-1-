@@ -46,12 +46,13 @@ const Auth = () => {
   };
 
   const handleLogin = async () => {};
-
+  
   const handleSignUp = async () => {
     try {
       if (validateSignUp()) {
+       
       const response = await apiClient.post(SIGNUP_ROUTES, { email, password } );
-      console.log({ response });
+      // console.log({ response });
       }
     } catch (error) {
       console.log("failed", error);
