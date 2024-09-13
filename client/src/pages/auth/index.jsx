@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { apiClient } from "@/lib/api-client";
 import { SIGNUP_ROUTES } from "@/lib/constants";
 
-
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,16 +45,20 @@ const Auth = () => {
   };
 
   const handleLogin = async () => {};
-  
+
   const handleSignUp = async () => {
-    try {
-      if (validateSignUp()) {
-       
-      const response = await apiClient.post(SIGNUP_ROUTES, { email, password } );
-      // console.log({ response });
+    if (validateSignUp()) {
+      try {
+        const response = await apiClient.post(
+          SIGNUP_ROUTES,
+          { email, password },
+          { withCredentials: true }
+        );
+        
+        console.log({ response });
+      } catch (error) {
+        console.log("Error", error);
       }
-    } catch (error) {
-      console.log("failed", error);
     }
   };
 
@@ -82,7 +85,7 @@ const Auth = () => {
                   Login
                 </TabsTrigger>
                 <TabsTrigger
-                  className="data-[state=active]:bg-transparent text-black text-opacity-90 border-b-2   rounded-none w-full data-[state=active]:text-black  data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300 "
+                  className="data-[ =active]:bg-transparent text-black text-opacity-90 border-b-2   rounded-none w-full data-[state=active]:text-black  data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all duration-300 "
                   value="signup"
                 >
                   Signup

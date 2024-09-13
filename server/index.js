@@ -23,8 +23,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-
-
 app.use("/api/auth", authRouters);
 
 const server = app.listen(port, () =>
@@ -33,5 +31,13 @@ const server = app.listen(port, () =>
 
 mongoose
   .connect(databaseUrl)
-  .then(() => console.log("database connected"))
-  .catch((err) => console.log("error connection", err));
+  .then(() => console.log("connected to MongoDB"))
+  .catch((err) => console.error("Failed to connect to MongoDB", err));
+
+  // mongoose
+  // .connect(databaseUrl,{
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  // })
+  // .then(() => console.log("database connected"))
+  // .catch((err) => console.log("error connection", err));

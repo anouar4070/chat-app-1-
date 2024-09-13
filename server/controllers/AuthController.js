@@ -9,30 +9,30 @@ const createToken = (email, userId) => {
   });
 };
 
-const signup = async (request, response, next) => {
+export const signup = async (req, res, next) => {
   try {
-    const { email, password } = request.body;
-    if (email!=="" && password!=="") {
-     const user = await User.create({ email, password });
-    response.cookie("jwt", createToken(email, user.id), {
-      maxAge,
-      secure: true,
-      sameSite: "None",
-    });
-    return response.status(201).json({
-      user: {
-        id: user.id,
-        email: user.email,
-        profileSetup: user.profileSetup,
-      },
-    });
-  }
-  else {
-  return response.status(400).send("Email & Password Required");
-  }}
-  catch (error) {
-    console.log({ error });
-    return response.status(500).send("Internal Server Error");
+    const { email, password } = req.body;
+    if (email !== "" && password !== "") {
+      const user = await User.create({ email, password });
+      res.cookie("jwt", createToken(email, user.id), {
+        maxAge,
+        secure: true, //https
+        sameSite: "None",
+      });
+
+      return res.status(201).json({
+        user: {
+          id: user.id,
+          email: user.email,
+          profileSetup: user.profileSetup,
+        },
+      });
+    } else {
+      return res.status(400).send("Email and Password Required");
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal Server Error");
   }
 };
 
@@ -50,4 +50,4 @@ const signup = async (request, response, next) => {
 //   res.json({ message: "User not found or password is wrong" });
 // };
 
-export { signup};
+
