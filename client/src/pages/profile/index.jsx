@@ -11,6 +11,7 @@ import { apiClient } from "@/lib/api-client";
 import {
   ADD_PROFILE_IMAGE_ROUTE,
   HOST,
+  REMOVE_PROFILE_IMAGE_ROUTE,
   UPDATE_PROFILE_ROUTE,
 } from "@/lib/contants";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +63,7 @@ const Profile = () => {
         );
         if (response.status === 200 && response.data) {
           setUserInfo(...response.data);
+          // setUserInfo({ ...userInfo, image: response.data.image });
           toast.success("Profile updated successfully.");
           navigate("/chat");
         }
@@ -91,7 +93,7 @@ const Profile = () => {
       const formData = new FormData(); //Create a FormData object
       formData.append("profile-image", file); //Append the file to formData under the key "profile-image"
       const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
-        withCredentials: true,
+        withCredentials: true
       }); // Send a POST request to the API with the file
       if (response.status === 200 && response.data.image) {
         setUserInfo({ ...userInfo, image: response.data.image }); // The setUserInfo function updates the user's information with new image

@@ -135,7 +135,7 @@ export const addProfileImage = async (request, response, next) => {
     }
 
     const data = Date.now();
-    let fileName = "uploads/profiles" + data + request.file.originalname;
+    let fileName = "uploads/profiles/" + data + request.file.originalname;
     renameSync(request.file.path, fileName);
     const updatedUser = await User.findByIdAndUpdate(
       request.userId,
@@ -152,7 +152,7 @@ export const addProfileImage = async (request, response, next) => {
   }
 };
 
-export const removeProfileImage = async (request, response, next) => {
+ export  const removeProfileImage = async (request, response, next) => {
   try {
     const { userId } = request;
     const user = await User.findById(userId);
